@@ -1,0 +1,89 @@
+[gd_scene load_steps=9 format=3 uid="uid://khc0mpugsvjb"]
+
+[ext_resource type="Shader" uid="uid://g15kdenupwjj" path="res://2DRing.gdshader" id="1_f3sb7"]
+[ext_resource type="Script" uid="uid://ce18ftty6518y" path="res://world.gd" id="1_fj7yv"]
+[ext_resource type="Script" uid="uid://cnphyjmqgrm8p" path="res://selection_indicator.gd" id="3_tlwt5"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_gv5m4"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_f3sb7"]
+radius = 0.745118
+
+[sub_resource type="SphereMesh" id="SphereMesh_fj7yv"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_tlwt5"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fj7yv"]
+shader = ExtResource("1_f3sb7")
+shader_parameter/circle_color = Color(1, 1, 1, 1)
+shader_parameter/circle_center = Vector2(0.5, 0.5)
+shader_parameter/circle_radius = 0.48
+shader_parameter/circle_width = 0.007
+
+[node name="World" type="Node3D" node_paths=PackedStringArray("camera")]
+script = ExtResource("1_fj7yv")
+camera = NodePath("Camera3D")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 6.15577, 5.96897)
+fov = 35.0
+
+[node name="Object1" type="StaticBody3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Object1"]
+mesh = SubResource("BoxMesh_gv5m4")
+skeleton = NodePath("../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Object1"]
+shape = SubResource("SphereShape3D_f3sb7")
+
+[node name="Object2" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.73543, -2.38419e-07, 0.886484)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Object2"]
+mesh = SubResource("SphereMesh_fj7yv")
+skeleton = NodePath("../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Object2"]
+shape = SubResource("SphereShape3D_tlwt5")
+
+[node name="Object3" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.80731, -2.38419e-07, -2.33628)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Object3"]
+mesh = SubResource("SphereMesh_fj7yv")
+skeleton = NodePath("../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Object3"]
+shape = SubResource("SphereShape3D_tlwt5")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="Control" node_paths=PackedStringArray("world", "camera")]
+material = SubResource("ShaderMaterial_fj7yv")
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -42.5
+offset_top = -42.5
+offset_right = 42.5
+offset_bottom = 42.5
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(42.5, 42.5)
+script = ExtResource("3_tlwt5")
+world = NodePath("../..")
+camera = NodePath("../../Camera3D")
